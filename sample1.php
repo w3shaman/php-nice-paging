@@ -6,18 +6,8 @@
 </head>
 <body>
 <?php
-// Include class
-include("nicePaging.php");
-
-// Configuration file
-include("config.php");
-
-// Connect to database
-$con=mysql_connect($host, $user, $password);
-mysql_select_db($database, $con);
-
-// Create instance
-$paging=new nicePaging($con);
+// auto load classes
+spl_autoload_register( function($class) { require_once $class.'.php'; } );
 
 // Create table
 echo '<table border="0" cellspacing="1" cellpadding="3" width="500" align="center" class="table">';
@@ -26,20 +16,21 @@ echo '<table border="0" cellspacing="1" cellpadding="3" width="500" align="cente
 	$rowsPerPage=10; // Rows per page
 	
 	// Pager query
-	$result=$paging->pagerQuery("SELECT id, title FROM sample", $rowsPerPage);
-	while($data=mysql_fetch_assoc($result)){
-		// Display row
-		echo '<tr class="row"><td>'.$data['id'].'</td><td>'.$data['title'].'</td></tr>';
+	$sql = "Select id, title from sample";
+	$data = nicePaging::getInstance()->query($sql, $rowsPerPage);
+	
+	foreach($data as $k=>$v){
+		echo '<tr class="row"><td>'.$k = $v->id.'</td><td>'.$v->title .'</td></tr>';
 	}
+
 echo '<table>';
 
 $link="sample1.php"; // Page name
 
 // Create links for paging
-echo $paging->createPaging($link);
+echo  nicePaging::getInstance()->createPaging($link);
 
-// Close database connection
-mysql_close($con);
+
 ?>
 </body>
 </html>

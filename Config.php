@@ -1,12 +1,13 @@
 <?php
+// trying out git on linux terminal.
 
 Class Config {
 
 	private static $_dbType = 'mysql';
 	private static $_host = 'localhost';
 	private static $_username = 'root';
-	private static $_password = '';
-	private static $_dbname = 'db';
+	private static $_password = '123xyz';
+	private static $_dbname = 'lab';
 
 	private function __construct() {
 		$this->_dbType = $_dbType;

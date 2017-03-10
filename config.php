@@ -37,6 +37,6 @@ public static function getPass() {
 public static function getDbname() {
 	return self::$_dbname;
 }
-	
+
 
 } //end of class config

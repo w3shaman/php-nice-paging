@@ -6,40 +6,36 @@
 </head>
 <body>
 <?php
-// auto load classes
-spl_autoload_register( function($class) { require_once $class.'.php'; } );
+// Include class
+include("nicePaging.php");
 
-// Create PDO object here
-$pdo = new PDO ( Config::getDbType().":host=". Config::getHost() ."; dbname=". Config::getDbname()."", Config::getUser(), Config::getPass());
-$pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+// Configuration file
+require_once "config.php";
 
-// Inject it to nice paging
-$nicePaging = new nicePaging($pdo);
+// Create instance
+$paging=new nicePaging($pdo);
 
 // Create table
 echo '<table border="0" cellspacing="1" cellpadding="3" width="500" align="center" class="table">';
 	echo '<tr class="header"><th width="50">ID</th><th width="450">Title</th></tr>';
-
+		
 	$rowsPerPage=10; // Rows per page
-
+	
 	// Pager query
-	$sql = "Select id, title from sample";
-	$data = $nicePaging->query($sql, $rowsPerPage);
-
-	foreach($data as $k=>$v){
-		echo '<tr class="row"><td>'.$k = $v->id.'</td><td>'.$v->title .'</td></tr>';
+	$result=$paging->pagerQuery("SELECT id, title FROM sample", $rowsPerPage);
+	foreach($result as $key => $value){
+		// Display row
+		echo '<tr class="row"><td>'.$key = $value->id.'</td><td>'.$value->title.'</td></tr>';
 	}
-
 echo '<table>';
 
 $link="sample1.php"; // Page name
 
 // Create links for paging
-echo $nicePaging->createPaging($link);
+echo $paging->createPaging($link);
 
-// Close the connection.
+// Close database connection
 $pdo = null;
-
 ?>
 </body>
 </html>

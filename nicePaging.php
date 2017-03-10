@@ -4,26 +4,6 @@ Class nicePaging {
 
 	private static $_instance = null;
 	
-<<<<<<< HEAD
-	/**
-	 * Constructor
-	 *
-	 * @access public
-	 * @param connection The database connection link (default=NULL)
-	 */
-	public function __construct(PDO $conn=null){
-		try {
-			$this->conn=$conn;
-			$this->conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-			$this->separator="?";
-			$this->maxPages=10;
-
-		} catch (PDOException $e) {
-			die($e->getMessage());
-		}
-		
-=======
 	private $_pdo,
 			$_query,
 			$_totalRows,
@@ -46,7 +26,6 @@ Class nicePaging {
 
 			die( $e->getMessage() );
 		}
->>>>>>> 57cdb31cd7c69f2748834f7f790e0fce454d500f
 	}
 
 	public function setSeparator($char) {
@@ -56,38 +35,12 @@ Class nicePaging {
 	public function setMaxPages($maxPages) {
 		$this->_maxPages = $maxPages;
 	}
-<<<<<<< HEAD
-	
-	/**
-	 * Method for limitting query result based on the requested page and rows per page 
-	 *
-	 * @access public
-	 * @param string $sql The SQL string (without LIMIT)
-	 * @param integer $rowsPerPage Displayed rows per page
-	 * @return resultset Resultset from query
-	 */
-	public function pagerQuery($sql, $rowsPerPage){
-		$page=isset($_GET['page']) ? $_GET['page'] : 1;
-		
-		if ($query = $this->conn->prepare($sql) ) {
-					
-			if ($query->execute()) {
-				$results = $query->fetchAll( PDO::FETCH_OBJ );
-				$totalRows = $query->rowCount();
-			} 
-		}
-
-		$this->totalPages=intval($totalRows/$rowsPerPage) + ($totalRows%$rowsPerPage==0 ? 0 : 1);
-		if($this->totalPages<1){
-			$this->totalPages=1;
-=======
 
 	public static function getInstance() {
 
 		if (!isset( self::$_instance )) {
 
 			self::$_instance = new nicePaging();
->>>>>>> 57cdb31cd7c69f2748834f7f790e0fce454d500f
 		}
 
 		return self::$_instance;
@@ -115,15 +68,6 @@ Class nicePaging {
 			$this->_page = 1;
 		}
 		
-<<<<<<< HEAD
-		$outputRes = $this->conn->prepare($sql." LIMIT ".$this->page*$rowsPerPage.", ".$rowsPerPage);
-		if ($outputRes->execute()) {
-			$results = $outputRes->fetchAll( PDO::FETCH_OBJ );
-		}
-
-		$this->page+=1;
-		return $results;
-=======
 		if($this->_page > $this->_totalPages){
 			$this->_page = $this->_totalPages;
 		}
@@ -144,7 +88,6 @@ Class nicePaging {
 
 		//close database connection
 		// $this->_pdo = null;
->>>>>>> 57cdb31cd7c69f2748834f7f790e0fce454d500f
 	}
 
 		
@@ -182,14 +125,8 @@ Class nicePaging {
 		
 		return $paging;
 	}
-<<<<<<< HEAD
-}
-
-?>
-=======
 
 } //end of class nicePaging
 
 
 ?>
->>>>>>> 57cdb31cd7c69f2748834f7f790e0fce454d500f

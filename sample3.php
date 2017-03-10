@@ -10,14 +10,10 @@
 include("nicePaging.php");
 
 // Configuration file
-include("config.php");
-
-// Connect to database
-$con=mysql_connect($host, $user, $password);
-mysql_select_db($database, $con);
+require_once "config.php";
 
 // Create instance
-$paging=new nicePaging($con);
+$paging=new nicePaging($pdo);
 
 // Create table
 echo '<table border="0" cellspacing="1" cellpadding="3" width="500" align="center" class="table">';
@@ -27,9 +23,9 @@ echo '<table border="0" cellspacing="1" cellpadding="3" width="500" align="cente
 	
 	// Pager query
 	$result=$paging->pagerQuery("SELECT id, title FROM sample", $rowsPerPage);
-	while($data=mysql_fetch_assoc($result)){
+	foreach($result as $key=>$value){
 		// Display row
-		echo '<tr class="row"><td>'.$data['id'].'</td><td>'.$data['title'].'</td></tr>';
+		echo '<tr class="row"><td>'.$key = $value->id.'</td><td>'.$value->title.'</td></tr>';
 	}
 echo '<table>';
 
@@ -41,7 +37,7 @@ $paging->setMaxPages(4); // Number of paging links that will be displayed per pa
 echo $paging->createPaging($link);
 
 // Close database connection
-mysql_close($con);
+$pdo = null;
 ?>
 </body>
 </html>

@@ -48,10 +48,18 @@ class nicePaging{
 	 * @access public
 	 * @param connection The database connection link (default=NULL)
 	 */
-	public function __construct($conn=null){
-		$this->conn=$conn;
-		$this->separator="?";
-		$this->maxPages=10;
+	public function __construct(PDO $conn=null){
+		try {
+			$this->conn=$conn;
+			$this->conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+			$this->separator="?";
+			$this->maxPages=10;
+
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+		
 	}
 	
 	/**
@@ -85,12 +93,14 @@ class nicePaging{
 	public function pagerQuery($sql, $rowsPerPage){
 		$page=isset($_GET['page']) ? $_GET['page'] : 1;
 		
-		if($this->conn==null)
-			$result=mysql_query($sql);
-		else
-			$result=mysql_query($sql, $this->conn);
-		
-		$totalRows=mysql_num_rows($result);
+		if ($query = $this->conn->prepare($sql) ) {
+					
+			if ($query->execute()) {
+				$results = $query->fetchAll( PDO::FETCH_OBJ );
+				$totalRows = $query->rowCount();
+			} 
+		}
+
 		$this->totalPages=intval($totalRows/$rowsPerPage) + ($totalRows%$rowsPerPage==0 ? 0 : 1);
 		if($this->totalPages<1){
 			$this->totalPages=1;
@@ -109,10 +119,13 @@ class nicePaging{
 			$this->page=0;
 		}
 		
-		$result=mysql_query($sql." LIMIT ".$this->page*$rowsPerPage.", ".$rowsPerPage);
+		$outputRes = $this->conn->prepare($sql." LIMIT ".$this->page*$rowsPerPage.", ".$rowsPerPage);
+		if ($outputRes->execute()) {
+			$results = $outputRes->fetchAll( PDO::FETCH_OBJ );
+		}
+
 		$this->page+=1;
-		
-		return $result;
+		return $results;
 	}
 	
 	/**
@@ -157,4 +170,5 @@ class nicePaging{
 		return $paging;
 	}
 }
+
 ?>

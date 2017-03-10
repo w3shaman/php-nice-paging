@@ -2,8 +2,6 @@
 
 Class nicePaging {
 
-	private static $_instance = null;
-
 	private $_pdo,
 			$_query,
 			$_totalRows,
@@ -13,12 +11,11 @@ Class nicePaging {
 			$_maxPages,
 			$_results;
 
-	private function  __construct() {
+	public function  __construct(PDO $pdo) {
 
 		try {
 
-			$this->_pdo = new PDO ( Config::getDbType().":host=". Config::getHost() ."; dbname=". Config::getDbname()."", Config::getUser(), Config::getPass());
-			$this->_pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+			$this->_pdo = $pdo;
 			$this->_separator = "?";
 			$this->_maxPages = 10;
 
@@ -34,16 +31,6 @@ Class nicePaging {
 
 	public function setMaxPages($maxPages) {
 		$this->_maxPages = $maxPages;
-	}
-
-	public static function getInstance() {
-
-		if (!isset( self::$_instance )) {
-
-			self::$_instance = new nicePaging();
-		}
-
-		return self::$_instance;
 	}
 
 	public function query($sql, $rowsPerPage) {

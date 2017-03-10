@@ -32,7 +32,7 @@ echo '<table border="0" cellspacing="1" cellpadding="3" width="500" align="cente
 
 echo '<table>';
 
-$link="sample1.php"; // Page name
+$link="sample3.php"; // Page name
 
 $nicePaging->setMaxPages(4); // Number of paging links that will be displayed per page
 

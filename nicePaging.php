@@ -49,18 +49,10 @@ class nicePaging{
 	 * @param connection The database connection link (default=NULL)
 	 */
 	public function __construct(PDO $conn=null){
-		try {
 			$this->conn=$conn;
-			$this->conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
 			$this->separator="?";
 			$this->maxPages=10;
-
-		} catch (PDOException $e) {
-			die($e->getMessage());
 		}
-		
-	}
 	
 	/**
 	 * Method for setting the separator between link and query string

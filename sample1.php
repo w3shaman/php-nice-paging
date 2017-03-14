@@ -37,5 +37,6 @@ echo $paging->createPaging($link);
 // Close database connection
 $pdo = null;
 ?>
+
 </body>
 </html>

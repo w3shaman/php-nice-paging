@@ -111,7 +111,7 @@ class nicePaging{
 			$this->page=0;
 		}
 
-		$outputRes = $this->conn->prepare($sql." LIMIT ".$this->page*$rowsPerPage.", ".$rowsPerPage);
+		$outputRes = $this->conn->prepare($sql." LIMIT ".$rowsPerPage." OFFSET ".$this->page*$rowsPerPage);
 		if ($outputRes->execute()) {
 			$results = $outputRes->fetchAll( PDO::FETCH_OBJ );
 		}

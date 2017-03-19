@@ -7,7 +7,7 @@
 <body>
 <?php
 // Include class
-include("nicePaging.php");
+require_once "nicePaging.php";
 
 // Configuration file
 require_once "config.php";

@@ -18,9 +18,9 @@ $paging=new nicePaging($pdo);
 // Create table
 echo '<table border="0" cellspacing="1" cellpadding="3" width="500" align="center" class="table">';
 	echo '<tr class="header"><th width="50">ID</th><th width="450">Title</th></tr>';
-	
+
 	$rowsPerPage=10; // Rows per page
-	
+
 	// Pager query
 	$result=$paging->pagerQuery("SELECT id, title FROM sample", $rowsPerPage);
 	foreach($result as $key => $value){
